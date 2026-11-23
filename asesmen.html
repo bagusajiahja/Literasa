@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#6a4cff">
+<title>Asesmen | Literasa</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="literasa.css">
+<style>
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 80px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.back{color:var(--v);font-weight:700;text-decoration:none}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font:700 .82rem var(--f-h);background:var(--card);border:1px solid var(--line)}
+.pill i{width:10px;height:10px;border-radius:50%;background:var(--bad);display:block}
+.pill.on i{background:var(--ok)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:var(--sh);animation:inn .5s both}
+h1{margin:.1em 0 .3em;font-size:1.8rem;line-height:1.2}
+.sub{color:var(--ink2);margin:0 0 6px}
+.warn{background:#fff7e0;border:2px solid var(--sun);border-radius:18px;padding:14px 16px;margin:18px 0;color:#5c4300}
+.warn b{display:block;font:700 1.02rem var(--f-h);margin-bottom:6px}
+.warn ul{margin:6px 0 0;padding-left:20px}
+.alert{background:#ffe9ed;border:2px solid var(--bad);color:#7a1226;border-radius:14px;padding:10px 14px;margin:12px 0;font-weight:600}
+label{display:block;font-weight:700;margin:16px 0 6px}
+input[type=text],textarea{width:100%;font:inherit;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
+input:focus,textarea:focus{outline:none;border-color:var(--v)}
+.row{display:grid;grid-template-columns:1fr 130px;gap:12px}
+.err{color:var(--bad);font-weight:700;min-height:1.4em;margin:10px 0 0}
+.actions{display:flex;gap:10px;justify-content:space-between;margin-top:22px;flex-wrap:wrap}
+.btn.ghost{background:var(--tint);color:var(--v);box-shadow:none}
+.btn.ghost:disabled{background:var(--tint);color:#a9a5cf}
+.meta{display:flex;justify-content:space-between;align-items:center;font:700 .9rem var(--f-h);color:var(--mut);margin-bottom:8px}
+.track{height:10px;background:var(--tint);border-radius:99px;overflow:hidden;margin-bottom:20px}
+.track div{height:100%;width:0;background:var(--g1);border-radius:99px;transition:width .4s var(--spring)}
+.q{font:600 1.15rem/1.5 var(--f-b);margin:0 0 16px}
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:left;font:inherit;font-weight:600;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:border-color .2s,background .2s}
+.opt:hover{border-color:var(--v2)}
+.opt i{flex:none;width:32px;height:32px;border-radius:10px;background:var(--tint);color:var(--v);display:grid;place-items:center;font:700 .95rem var(--f-h);font-style:normal}
+.opt.sel{border-color:var(--v);background:var(--tint)}
+.opt.sel i{background:var(--v);color:#fff}
+.skor{font:800 4rem/1 var(--f-h);margin:10px 0;background:var(--g1);-webkit-background-clip:text;background-clip:text;color:transparent}
+.center{text-align:center}
+.rev{text-align:left;margin:18px 0 4px}
+.rev h2{font:700 1rem var(--f-h);margin:0 0 10px;text-align:center}
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:8px}
+.tj{border-radius:12px;padding:8px 0;text-align:center;font:700 .85rem var(--f-h);border:2px solid transparent}
+.tj small{display:block;font-size:1.05rem;line-height:1.2}
+.tj.b{background:#d9f7e8;border-color:#2bb673;color:#0b5a37}
+.tj.s{background:#ffe1e6;border-color:#e5484d;color:#7a1226}
+.tj.k{background:#fff4d6;border-color:#f0b429;color:#5c4300}
+.rl{font-size:.85rem;color:var(--ink2);text-align:center;margin:10px 0 0}
+.rk{margin:12px 0 0;padding:0;list-style:none;font-size:.92rem}
+.rk li{padding:4px 0;border-bottom:1px dashed var(--line)}
+.bag{display:inline-block;font:700 .82rem var(--f-h);color:var(--v);background:var(--tint);padding:4px 12px;border-radius:99px;margin-bottom:12px}
+.q{white-space:pre-line}
+.tm{font:800 1rem var(--f-h);color:var(--v);background:var(--tint);padding:4px 12px;border-radius:99px}.tm.low{background:#ffe1e6;color:#b4102e;animation:bob 1s infinite}
+.sec{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.hasil{display:grid;gap:10px;margin:18px 0 4px;text-align:left}.hb{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;font:700 .92rem var(--f-h)}.hb .tk{grid-column:1/-1;height:10px;background:var(--tint);border-radius:99px;overflow:hidden}.hb .tk i{display:block;height:100%;background:var(--g1);border-radius:99px}
+select{width:100%;font:inherit;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
+.nvg{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:0 0 14px}.nv{border:2px solid var(--line);background:#fff;border-radius:10px;padding:6px 0;font:700 .8rem var(--f-h);cursor:pointer;color:var(--ink)}.nv.d{background:var(--tint);border-color:var(--v2)}.nv.c{background:var(--v);color:#fff;border-color:var(--v)}
+@media print{body{display:none}}
+[hidden]{display:none!important}
+@media(max-width:480px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="aurora"><i></i><i></i><i></i></div>
+<main class="wrap">
+  <div class="top">
+    <a class="back" href="surat.html" id="kembali">← Kantor Pos Kelas</a>
+    <span class="pill" id="net"><i></i><span>Memeriksa…</span></span>
+  </div>
+
+  <section class="card" id="gate">
+    <h1>Asesmen Surat Formal dan Nonformal</h1>
+    <p class="sub">20 butir pilihan ganda, 30 menit. Catatan materi tidak dipakai, yang dinilai adalah kemampuanmu menganalisis surat. Nilai = jawaban benar ÷ 20 × 100.</p>
+    <p class="sub"><b>Cara mengerjakan:</b> pilih satu jawaban tiap soal. Ketuk nomor di atas soal atau tombol Sebelumnya dan Berikutnya untuk pindah. Tombol <b>Selesai dan kirim</b> muncul di soal terakhir, dan kamu diingatkan bila masih ada soal kosong.</p>
+<div class="warn" role="alert">
+      <b>⚠️ Baca aturan ini dulu</b>
+      <ul>
+        <li>Wajib terhubung internet dari awal sampai muncul tulisan “Nilai terkirim”.</li>
+        <li>Butuh <b>kode dari guru</b>. Kode berbeda tiap sesi.</li>
+        <li>Hanya <b>satu kali kesempatan</b>. Waktu berjalan sejak kamu menekan Mulai, dan jawaban terkirim otomatis saat waktu habis.</li>
+        <li>Urutan soal dan pilihan jawaban berbeda untuk tiap murid.</li>
+        <li><b>Dilarang keluar dari halaman ini</b> (pindah aplikasi atau tab, membuka notifikasi, menekan Home atau Kembali). Begitu keluar, asesmen langsung berhenti, jawaban yang sudah terisi otomatis dikirim, dan kejadian dilaporkan ke guru. Matikan notifikasi sebelum mulai.</li>
+        <li>Kerjakan sendiri. Setelah terkirim, kamu melihat nilai dan ringkasan per bagian, lalu mengisi refleksi singkat. Kunci jawaban tidak ditampilkan.</li>
+      </ul>
+    </div>
+    <div class="alert" id="offmsg" hidden>Kamu sedang offline. Tombol mulai aktif lagi setelah internet tersambung.</div>
+    <label for="nama">Nama lengkap</label>
+    <div class="row">
+      <input type="text" id="nama" maxlength="80" autocomplete="off" placeholder="Nama sesuai daftar kelas">
+      <input type="text" id="kelas" maxlength="10" autocomplete="off" placeholder="Kelas, mis. 7A" aria-label="Kelas">
+    </div>
+    <label for="kode">Kode dari guru</label>
+    <input type="text" id="kode" maxlength="30" autocomplete="off" placeholder="Kode di papan tulis">
+    <label style="display:flex;gap:10px;align-items:flex-start;font-weight:600"><input type="checkbox" id="setuju" style="width:auto;margin-top:6px"> Saya sudah membaca aturan di atas dan akan mengerjakan sendiri tanpa keluar dari halaman ini.</label>
+    <p class="err" id="err" role="status"></p>
+    <div class="actions"><button class="btn" id="mulai" type="button">Mulai asesmen</button></div>
+  </section>
+
+  <section class="card sec" id="quiz" hidden>
+    <div class="alert" id="qwarn" hidden></div>
+    <div class="meta"><span id="no"></span><span class="tm" id="tm">30:00</span><span id="who"></span></div>
+    <div class="track"><div id="bar"></div></div>
+    <div class="nvg" id="nvg"></div>
+    <p class="q" id="teks"></p>
+    <div id="opsi"></div>
+    <div class="actions">
+      <button class="btn ghost" id="prev" type="button">Sebelumnya</button>
+      <button class="btn" id="next" type="button">Berikutnya</button>
+      <button class="btn" id="kirim" type="button" hidden>Selesai dan kirim</button>
+    </div>
+  </section>
+
+  <section class="card center" id="done" hidden>
+    <h1 id="djudul">Mengirim jawaban…</h1>
+    <div class="skor" id="dskor" hidden></div>
+    <p class="sub" id="dstat"></p>
+    <div class="rev" id="rev" hidden></div>
+    <div class="rev" id="refl" hidden>
+      <h2>Refleksi singkat</h2>
+      <label for="rf0">Seberapa yakin kamu dengan jawabanmu tadi?</label>
+      <select id="rf0"><option value="">Pilih...</option><option value="1">Belum yakin, banyak menebak</option><option value="2">Cukup yakin</option><option value="3">Yakin</option><option value="4">Sangat yakin</option></select>
+      <label for="rf1">Bagian mana yang terasa paling sulit?</label>
+      <select id="rf1"><option value="">Pilih...</option><option>Membedakan jenis surat</option><option>Struktur surat formal</option><option>Struktur surat nonformal</option><option>Kaidah kebahasaan surat</option><option>Tidak ada yang sulit</option></select>
+      <label for="rf2">Satu hal yang kupelajari tentang surat</label><textarea id="rf2" rows="2" maxlength="300"></textarea>
+      <label for="rf3">Hal yang masih membingungkan bagiku</label><textarea id="rf3" rows="2" maxlength="300"></textarea>
+      <p class="err" id="rfe" role="status"></p>
+      <button class="btn" id="rfk" type="button">Kirim refleksi</button>
+    </div>
+    <div class="actions" style="justify-content:center">
+      <button class="btn" id="retry" type="button" hidden>Kirim ulang</button>
+      <a class="btn" id="home" href="index.html" hidden>Kembali ke beranda</a>
+    </div>
+  </section>
+</main>
+
+<script src="literasa.js"></script>
+<script>
+/* ===== PENGATURAN: samakan dengan Code.gs ===== */
+const URL_SHEET='https://script.google.com/macros/s/AKfycbzrYZRch0KxjkVW-K_UU0A_7-wyAWUsTAEtRdMz6UcQhZs6JOs0ofe5iX1v1p2xsvPlhg/exec';
+const SECRET='BAGUSWINDUAJI';
+
+
+/* ===== 20 SOAL. Kunci jawaban hanya ada di Code.gs, tidak di halaman ini. ===== */
+const BAG={A:'Membedakan jenis surat',B:'Struktur surat formal',C:'Struktur surat nonformal',D:'Kaidah kebahasaan surat'};
+const RAW=[
+[
+"A",
+"Perhatikan dua kutipan surat berikut!\n\nKutipan 1:\nYth. Bapak Kepala Sekolah, Dengan hormat, saya memohon izin menggunakan perpustakaan untuk kegiatan literasi kelas. Hormat saya, Dhea.\n\nKutipan 2:\nHai, Dhea! Besok kita ke perpustakaan bareng, yuk. Aku sudah bawa bukunya. Salam, Elsa.\n\nJenis kedua surat beserta petunjuk yang paling kuat untuk membedakannya adalah ....",
+[
+"Keduanya formal karena sama-sama membahas perpustakaan",
+"Kutipan 1 formal dan Kutipan 2 nonformal, karena penerima, tujuan, dan bahasanya berbeda",
+"Kutipan 1 nonformal dan Kutipan 2 formal karena Kutipan 1 lebih panjang",
+"Keduanya nonformal karena sama-sama ditulis oleh murid"
+]
+],
+[
+"A",
+"Seorang murid menulis surat kepada pamannya:\n\n“Paman yang kusayangi, semoga Paman dan keluarga senantiasa sehat dan dalam lindungan Tuhan. Kami di sini baik-baik saja. Salam hormat dari keponakanmu, Windu.”\n\nBahasa surat itu sangat hormat, tetapi tidak ada kop, nomor, lampiran, maupun hal. Pernyataan yang paling tepat tentang jenis surat ini adalah ....",
+[
+"Formal, karena bahasanya sangat hormat",
+"Formal, karena memakai salam penutup yang hormat",
+"Tidak dapat ditentukan, karena suratnya tidak memiliki kop",
+"Nonformal, karena penerimanya keluarga dan tujuannya memberi kabar pribadi"
+]
+],
+[
+"A",
+"Perhatikan dua kutipan pembuka surat berikut!\n\n(1) Dengan hormat, sehubungan dengan rencana karyawisata kelas VII, kami memberitahukan bahwa ...\n(2) Halo, Elsa! Apa kabar? Aku mau cerita soal karyawisata kemarin, seru banget!\n\nPerbedaan paling mendasar antara kedua kutipan itu terletak pada ....",
+[
+"panjang kalimat pembuka dan jumlah paragrafnya",
+"topik yang dibicarakan, yaitu karyawisata",
+"penerima dan tujuan surat yang memengaruhi sapaan, pilihan kata, dan ragam bahasanya",
+"penggunaan tanda baca di akhir kalimat"
+]
+],
+[
+"A",
+"Seorang wali murid menulis surat permohonan keringanan biaya kepada kepala sekolah. Surat itu memakai salam pembuka “Yth. Bapak Kepala Sekolah”, bahasa baku, dan salam penutup “Hormat saya,”, tetapi tidak memakai kop surat.\n\nPenilaian yang paling tepat tentang surat itu adalah ....",
+[
+"Surat itu nonformal karena tidak memakai kop surat",
+"Surat itu nonformal karena ditulis oleh perseorangan",
+"Surat itu tetap formal karena kop dipakai oleh lembaga, sedangkan surat perseorangan biasanya tanpa kop",
+"Surat itu formal hanya jika diberi nomor dan lampiran"
+]
+],
+[
+"B",
+"Perhatikan bagian surat berikut!\n\nLampiran : 2 berkas\n\nJika bagian itu dihilangkan, akibat yang paling mungkin adalah ....",
+[
+"penerima tidak tahu bahwa ada berkas tambahan yang harus diperiksa",
+"penerima tidak tahu siapa yang menulis surat",
+"penerima tidak tahu kapan surat dibuat",
+"penerima tidak tahu kepada siapa surat ditujukan"
+]
+],
+[
+"B",
+"Seorang murid menyusun surat resmi dengan urutan berikut:\n\nkop surat – nomor – hal – isi surat – alamat tujuan – salam pembuka – salam penutup – tanda tangan\n\nKesalahan urutan pada susunan itu terdapat pada ....",
+[
+"kop surat yang diletakkan sebelum nomor",
+"alamat tujuan dan salam pembuka yang diletakkan setelah isi surat",
+"hal yang diletakkan setelah nomor",
+"salam penutup yang diletakkan sebelum tanda tangan"
+]
+],
+[
+"B",
+"Perhatikan dua bagian surat berikut!\n\nBagian X: Hal : Permohonan izin penggunaan aula\nBagian Y: Sehubungan dengan kegiatan bakti sosial OSIS, kami memohon izin menggunakan aula pada Sabtu, 5 Desember 2026.\n\nPerbedaan fungsi bagian X dan bagian Y adalah ....",
+[
+"bagian X menunjukkan pengirim, sedangkan bagian Y menunjukkan penerima",
+"bagian X menyebut pokok surat dalam satu frasa, sedangkan bagian Y menguraikan maksud surat secara lengkap",
+"bagian X menunjukkan waktu surat dibuat, sedangkan bagian Y menunjukkan nomor surat",
+"bagian X berisi salam pembuka, sedangkan bagian Y berisi salam penutup"
+]
+],
+[
+"B",
+"Sebuah surat resmi isinya lengkap, tetapi di bagian akhir tidak ada tanda tangan dan nama terang. Penerima surat ragu apakah surat itu sah dan siapa penanggung jawabnya.\n\nKeraguan itu menunjukkan bahwa tanda tangan dan nama terang berfungsi sebagai ....",
+[
+"penanda urutan arsip surat",
+"penjelasan pokok isi surat",
+"sapaan hormat kepada penerima",
+"pengesahan surat dan penanda identitas penulisnya"
+]
+],
+[
+"B",
+"Perhatikan dua bagian surat berikut!\n\nBagian P:\nYth. Bapak Kepala Sekolah\ndi Tempat\n\nBagian Q:\nDengan hormat,\n\nPerbedaan fungsi bagian P dan bagian Q adalah ....",
+[
+"P menyapa penerima dengan akrab, sedangkan Q menunjukkan alamat pengirim",
+"P menunjukkan kepada siapa surat ditujukan, sedangkan Q menyapa penerima dengan hormat sebelum isi surat",
+"P mengakhiri surat dengan hormat, sedangkan Q menyebut pokok surat",
+"P dan Q sama-sama menunjukkan identitas pengirim surat"
+]
+],
+[
+"B",
+"Sebuah surat resmi sekolah hanya memuat bagian berikut: kop surat, nomor surat, tempat dan tanggal, alamat tujuan, salam pembuka, isi surat, salam penutup, serta tanda tangan dan nama terang.\n\nBagian yang belum ada agar strukturnya lengkap dan fungsi bagian itu adalah ....",
+[
+"nama pengirim dan sapaan, yang menyebut penulis dan menyapa penerima secara akrab",
+"pembuka isi dan penutup isi, yang menyebut tanggal dan nomor surat",
+"salam pembuka dan salam penutup, yang menyapa dan mengakhiri surat",
+"lampiran dan hal, yang menyebut berkas yang dikirim dan pokok isi surat"
+]
+],
+[
+"C",
+"Perhatikan kutipan surat berikut!\n\n“Hai, Windu! Apa kabar? Semoga kamu selalu sehat dan semangat belajar, ya.”\n\nKutipan tersebut terdiri atas dua bagian surat nonformal, yaitu ....",
+[
+"tempat dan tanggal serta salam pembuka",
+"isi surat dan penutup isi",
+"salam pembuka dan pembuka isi",
+"alamat tujuan dan salam pembuka"
+]
+],
+[
+"C",
+"Perhatikan surat berikut!\n\nBandung, 23 November 2026\n\nHalo, Elsa!\nApa kabar? Semoga kamu sehat, ya.\nAku mau cerita, kelasku juara satu lomba kebersihan.\nKabari aku ya kalau kamu bisa datang.\n\nDhea\n\nBagian surat nonformal yang belum ada pada surat itu adalah ....",
+[
+"salam pembuka, sehingga surat terasa dingin",
+"tempat dan tanggal, sehingga waktu penulisan tidak jelas",
+"salam penutup, sehingga surat terasa berhenti mendadak",
+"nama pengirim, sehingga penulisnya tidak diketahui"
+]
+],
+[
+"C",
+"Seorang murid membandingkan struktur surat formal dan nonformal.\n\nPernyataan yang paling tepat dari hasil perbandingannya adalah ....",
+[
+"Surat nonformal tidak memiliki isi surat karena bentuknya bebas",
+"Surat nonformal tidak memerlukan kop, nomor, lampiran, hal, dan alamat tujuan, tetapi tetap memiliki isi dan nama pengirim",
+"Surat nonformal tidak memiliki salam pembuka dan salam penutup",
+"Surat nonformal wajib memiliki kop dan nomor seperti surat formal"
+]
+],
+[
+"C",
+"Perhatikan kutipan surat kepada paman berikut!\n\n“Paman jangan lupa istirahat, ya. Kabari aku kalau sudah sampai di kota.”\n\nKutipan tersebut termasuk bagian surat nonformal yang disebut ... dan berfungsi ....",
+[
+"penutup isi; menyampaikan harapan atau pesan akhir",
+"pembuka isi; menanyakan kabar penerima",
+"salam penutup; mengakhiri surat dengan akrab",
+"isi surat; menyampaikan cerita utama"
+]
+],
+[
+"D",
+"Perhatikan kalimat berikut!\n\n“Gue pengen minta izin make aula buat acara OSIS.”\n\nJika kalimat itu dipakai dalam surat kepada kepala sekolah, perbaikan yang paling tepat adalah ....",
+[
+"Aku mau minta izin pakai aula buat acara OSIS ya, Pak.",
+"Saya ingin memohon izin menggunakan aula untuk kegiatan OSIS.",
+"Gue mohon izin menggunakan aula untuk kegiatan OSIS.",
+"Saya pengen minta izin make aula untuk kegiatan OSIS."
+]
+],
+[
+"D",
+"Seorang murid akan menulis surat permohonan kepada Ketua RW.\n\nSalam pembuka beserta alasan pemilihannya yang paling tepat adalah ....",
+[
+"“Hai, Pak RW!” karena sapaan akrab membuat penerima senang",
+"“Halo, Pak!” karena singkat dan mudah dibaca",
+"“Yth. Bapak Ketua RW, Dengan hormat,” karena penerimanya dihormati dan urusannya resmi",
+"“Bapak RW, dengarkan ya,” karena langsung ke pokok surat"
+]
+],
+[
+"D",
+"Perhatikan empat kalimat dari sebuah surat resmi berikut!\n\n(1) Kami mohon izin memakai aula pada hari Sabtu, 5 Desember 2026.\n(2) Kami mohon ijin memakai aula pada hari Sabtu, 5 Desember 2026.\n(3) Kami mohon izin memakai aula pada hari sabtu, 5 desember 2026.\n(4) Terimakasih, kami mohon izin memakai aula pada hari Sabtu, 5 Desember 2026.\n\nKalimat yang penulisannya benar adalah ....",
+[
+"kalimat (1), karena kata baku dan huruf kapitalnya tepat",
+"kalimat (2), karena memakai kata ijin",
+"kalimat (3), karena nama hari dan bulan ditulis dengan huruf kecil",
+"kalimat (4), karena diawali ucapan terima kasih"
+]
+],
+[
+"D",
+"Seorang murid menulis surat kepada sahabatnya. Surat nonformal boleh akrab, tetapi tetap harus santun.\n\nKalimat yang melanggar kesantunan adalah ....",
+[
+"Kabari aku ya kalau kamu sudah sampai.",
+"Terima kasih ya, kamu selalu mau mendengarkan ceritaku.",
+"Semoga kamu cepat sembuh, aku kangen main bareng.",
+"Kamu ini lelet banget sih, makanya telat terus!"
+]
+],
+[
+"D",
+"Perhatikan dua surat berikut yang bertujuan sama, yaitu memberi tahu bahwa penulisnya sakit.\n\nSurat 1 (untuk sahabat):\n“Hai, Aji! Aku nggak masuk ya, lagi sakit nih.”\n\nSurat 2 (untuk wali kelas):\n“Dengan hormat, saya memberitahukan bahwa saya tidak dapat mengikuti pelajaran karena sakit.”\n\nPerbedaan kedua surat terutama disebabkan oleh ....",
+[
+"tujuan yang berbeda sehingga isi suratnya berbeda",
+"penerima yang berbeda sehingga ragam bahasa, sapaan, dan pilihan kata ikut berbeda",
+"penyebab sakit yang berbeda pada kedua penulis",
+"panjang surat yang menentukan jenis suratnya"
+]
+],
+[
+"D",
+"Seorang murid menulis kepada sahabatnya:\n\n“Sehubungan dengan rencana liburan, kami mengundang Saudara untuk berkunjung ke rumah kami.”\n\nPenilaian yang paling tepat tentang bahasa kalimat itu adalah ....",
+[
+"sudah tepat karena surat yang sopan harus memakai bahasa baku",
+"terlalu resmi untuk sahabat; lebih tepat memakai bahasa akrab, misalnya “Liburan nanti main ke rumahku, yuk!”",
+"kurang tepat karena surat kepada sahabat harus memakai bahasa kasar",
+"sudah tepat karena semua surat wajib memakai kata sehubungan dengan"
+]
+]
+];
+const SOAL=RAW.map((r,i)=>({id:'q'+(i+1),bag:r[0],teks:r[1],opsi:r[2]}));
+
+const SK='literasa_asesmen_v5';
+const $=s=>document.querySelector(s);
+let st=null,idx=0,mengirim=false,tick=0,tq=0,dlg=0,akhir=null;
+
+const load=()=>{try{return JSON.parse(localStorage.getItem(SK)||'null')}catch(e){return null}};
+const save=()=>{try{localStorage.setItem(SK,JSON.stringify(st))}catch(e){}};
+const hapus=()=>{try{localStorage.removeItem(SK)}catch(e){}};
+['literasa_asesmen_v2','literasa_asesmen_v4'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+const uid=()=>(window.crypto&&crypto.randomUUID&&crypto.randomUUID())||(Date.now()+'-'+Math.random().toString(36).slice(2));
+function show(id){['gate','quiz','done'].forEach(x=>$('#'+x).hidden=(x!==id));$('#kembali').style.visibility=id==='gate'?'visible':'hidden';window.scrollTo(0,0)}
+const tunggu=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ---------- acak per murid (deterministik dari id sesi, jadi tetap sama saat dimuat ulang) ---------- */
+function rng(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h=Math.imul(h^seed.charCodeAt(i),3432918353);h=h<<13|h>>>19}let a=h>>>0;
+  return function(){a=(a+0x6D2B79F5)|0;let t=Math.imul(a^a>>>15,1|a);t=(t+Math.imul(t^t>>>7,61|t))^t;return((t^t>>>14)>>>0)/4294967296}}
+function acak(arr,r){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function susun(id){const r=rng(id);return acak(SOAL.map((_,i)=>i),r).map(i=>({i:i,ops:acak(SOAL[i].opsi.map((_,k)=>k),r)}))}
+
+/* ---------- komunikasi dengan server (Apps Script) ---------- */
+async function panggil(url,opsi,batas){
+  const c=new AbortController(),t=setTimeout(()=>c.abort(),batas);
+  try{
+    const r=await fetch(url,Object.assign({signal:c.signal,cache:'no-store',redirect:'follow'},opsi||{}));
+    const txt=await r.text();
+    try{return JSON.parse(txt)}
+    catch(e){throw new Error('Balasan server tidak dikenali. Guru perlu memeriksa deploy Apps Script (akses: Siapa saja).')}
+  }finally{clearTimeout(t)}
+}
+const ping=()=>panggil(URL_SHEET+'?ping='+Date.now(),null,10000).then(j=>!!(j&&j.ok)).catch(()=>false);
+const q=o=>Object.keys(o).map(k=>k+'='+encodeURIComponent(o[k])).join('&');
+
+/* ---------- status koneksi ---------- */
+function net(){
+  const on=navigator.onLine;
+  $('#net').className='pill'+(on?' on':'');
+  $('#net span').textContent=on?'Terhubung':'Tidak ada internet';
+  $('#mulai').disabled=!on;
+  $('#offmsg').hidden=on;
+  if(st&&!st.selesai&&!$('#quiz').hidden){const w=$('#qwarn');if(!on){w.textContent='Koneksi terputus. Kamu masih bisa menjawab, tetapi internet harus menyala saat jawaban dikirim.';w.hidden=false}else if(w.dataset.k==='net'||!st.pindah){w.hidden=true}w.dataset.k=on?'':'net'}
+  if(on&&st&&st.selesai&&!$('#done').hidden&&!mengirim)kirim();
+}
+addEventListener('online',net);addEventListener('offline',net);
+
+/* ---------- mulai (server memeriksa kode, nama, dan mencatat waktu mulai) ---------- */
+async function mulai(){
+  const nama=$('#nama').value.trim().replace(/\s+/g,' '),kelas=$('#kelas').value.trim().toUpperCase(),kode=$('#kode').value.trim();
+  const err=$('#err');err.style.color='';
+  if(nama.length<3||!kelas||!kode){err.textContent='Isi nama lengkap, kelas, dan kode dari guru dulu.';return}
+  if(!$('#setuju').checked){err.textContent='Centang pernyataan bahwa kamu sudah membaca aturan.';return}
+  err.textContent='';const b=$('#mulai');b.disabled=true;b.textContent='Memeriksa…';
+  try{
+    const lama=load();
+    if(lama&&lama.selesai&&lama.nama===nama&&lama.kelas===kelas){st=lama;show('done');kirim();return}
+    const id=(lama&&lama.nama===nama&&lama.kelas===kelas)?lama.id:uid();
+    let j;
+    try{j=await panggil(URL_SHEET+'?'+q({aksi:'mulai',id:id,nama:nama,kelas:kelas,kode:kode,secret:SECRET}),null,15000)}
+    catch(e){err.textContent='Belum bisa terhubung ke server guru. Periksa internet, lalu coba lagi. ('+(e.message||'gagal')+')';return}
+    if(!j||!j.ok){err.textContent=(j&&j.error)||'Tidak bisa memulai asesmen.';return}
+    st=(lama&&lama.id===id)?lama:{id:id,nama:nama,kelas:kelas,jawaban:{},wkt:{},pindah:0,idx:0,selesai:false};
+    st.akhir=Date.now()+j.sisa*1000;st.susun=susun(st.id);save();
+    $('#who').textContent=st.nama+' · '+st.kelas;
+    idx=Math.min(st.idx||0,SOAL.length-1);show('quiz');net();render();jam();
+    try{history.pushState({a:1},'',location.href)}catch(e){}
+    try{const el=document.documentElement;if(el.requestFullscreen)el.requestFullscreen().then(()=>{st.fs=1;save()}).catch(()=>{})}catch(e){}
+  }finally{b.disabled=!navigator.onLine;b.textContent='Mulai asesmen'}
+}
+$('#mulai').onclick=mulai;
+
+/* ---------- pewaktu ---------- */
+function jam(){
+  clearInterval(tick);
+  const f=()=>{
+    const s=Math.max(0,Math.round((st.akhir-Date.now())/1000));
+    $('#tm').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+    $('#tm').className='tm'+(s<=120?' low':'');
+    if(s<=0){clearInterval(tick);selesaikan()}
+  };
+  f();tick=setInterval(f,1000);
+}
+function selesaikan(){
+  if(!st||st.selesai)return;
+  catatWaktu();st.selesai=true;save();clearInterval(tick);show('done');kirim();
+}
+
+/* ---------- tampil soal ---------- */
+function catatWaktu(){if(!st||!tq)return;const k=SOAL[st.susun[idx].i].id;st.wkt[k]=(st.wkt[k]||0)+Math.round((Date.now()-tq)/1000);tq=0}
+function render(){
+  const n=st.susun[idx],soal=SOAL[n.i];st.idx=idx;save();tq=Date.now();
+  $('#no').textContent='Soal '+(idx+1)+' dari '+SOAL.length;
+  $('#bar').style.width=((idx+1)/SOAL.length*100)+'%';
+  const gn=$('#nvg');gn.innerHTML='';st.susun.forEach((m,p)=>{const bt=document.createElement('button');bt.type='button';bt.textContent=p+1;bt.className='nv'+(typeof st.jawaban[SOAL[m.i].id]==='number'?' d':'')+(p===idx?' c':'');bt.onclick=()=>{catatWaktu();idx=p;render()};gn.append(bt)});
+  $('#teks').textContent=soal.teks;
+  const box=$('#opsi');box.innerHTML='';
+  n.ops.forEach((asli,pos)=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='opt'+(st.jawaban[soal.id]===asli?' sel':'');
+    const k=document.createElement('i'),s=document.createElement('span');
+    k.textContent='ABCD'[pos];s.textContent=soal.opsi[asli];b.append(k,s);
+    b.onclick=()=>{st.jawaban[soal.id]=asli;save();render()};
+    box.appendChild(b);
+  });
+  $('#prev').disabled=idx===0;
+  const akhir=idx===SOAL.length-1;
+  $('#next').hidden=akhir;$('#kirim').hidden=!akhir;
+}
+$('#prev').onclick=()=>{if(idx>0){catatWaktu();idx--;render()}};
+$('#next').onclick=()=>{if(idx<SOAL.length-1){catatWaktu();idx++;render()}};
+$('#kirim').onclick=()=>{
+  const kosong=SOAL.filter(s=>typeof st.jawaban[s.id]!=='number').length;
+  dlg=1;const lanjut=!kosong||confirm('Masih ada '+kosong+' soal belum dijawab. Tetap kirim?');dlg=0;if(!lanjut)return;
+  if(!navigator.onLine){dlg=1;alert('Kamu sedang offline. Sambungkan internet dulu, lalu tekan Selesai dan kirim lagi.');dlg=0;return}
+  selesaikan();
+};
+
+/* ---------- penjaga kejujuran (pencegah, bukan jaminan mutlak) ---------- */
+function keluar(){
+  if(dlg||!st||st.selesai||$('#quiz').hidden)return;
+  st.pindah=(st.pindah||0)+1;st.paksa=1;save();selesaikan();
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)keluar()});
+addEventListener('pagehide',keluar);
+addEventListener('blur',()=>setTimeout(()=>{if(!dlg&&!document.hasFocus())keluar()},500));
+document.addEventListener('fullscreenchange',()=>{if(document.fullscreenElement){if(st)st.fs=1}else if(st&&st.fs&&!st.selesai&&!$('#quiz').hidden)keluar()});
+addEventListener('popstate',()=>{if(st&&!st.selesai&&!$('#quiz').hidden){try{history.pushState({a:1},'',location.href)}catch(e){}keluar()}});
+['copy','cut','paste','contextmenu','dragstart','selectstart'].forEach(e=>document.addEventListener(e,ev=>{if(!$('#quiz').hidden&&ev.target.tagName!=='INPUT')ev.preventDefault()}));
+document.addEventListener('keydown',e=>{
+  if($('#quiz').hidden)return;
+  const k=(e.key||'').toLowerCase();
+  if(e.key==='F12'||((e.ctrlKey||e.metaKey)&&['c','x','v','a','p','s','u'].includes(k))||((e.ctrlKey||e.metaKey)&&e.shiftKey&&['i','j','c'].includes(k)))e.preventDefault();
+});
+
+/* ---------- kirim ke guru ---------- */
+function berhasil(j){
+  const paksa=st&&st.paksa;akhir={id:st.id,nama:st.nama,kelas:st.kelas};
+  hapus();clearInterval(tick);try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}
+  $('#djudul').textContent='Nilai terkirim ✅';
+  $('#dskor').textContent=j.skor;$('#dskor').hidden=false;
+  $('#dstat').textContent=(paksa?'Asesmen dihentikan karena kamu keluar dari halaman. Jawaban yang sudah terisi dikirim dan kejadian ini dilaporkan ke guru. ':'')+'Benar '+j.benar+' dari '+j.total+' butir. Nilaimu sudah masuk ke guru. Pembahasan soal dilakukan bersama guru di kelas.';
+  $('#refl').hidden=false;
+  if(window.Lit&&Lit.confetti&&j.skor>=75){try{Lit.confetti()}catch(e){}}
+  tampilRingkasan(j);
+  $('#home').hidden=false;
+  st=null;
+}
+function tampilRingkasan(j){
+  const box=$('#rev');box.innerHTML='';
+  if(!j.bagian){box.hidden=true;return}
+  const h=document.createElement('h2');h.textContent='Ringkasan per bagian';
+  const g=document.createElement('div');g.className='hasil';
+  Object.keys(BAG).forEach(k=>{const v=j.bagian[k];if(!v)return;
+    const d=document.createElement('div');d.className='hb';
+    const a=document.createElement('span');a.textContent=BAG[k];
+    const b=document.createElement('span');b.textContent=v[0]+' dari '+v[1];
+    const t=document.createElement('div');t.className='tk';const i=document.createElement('i');i.style.width=(v[1]?100*v[0]/v[1]:0)+'%';t.append(i);
+    d.append(a,b,t);g.append(d)});
+  box.append(h,g);box.hidden=false;
+}
+async function kirim(){
+  if(mengirim||!st)return;
+  mengirim=true;
+  $('#djudul').textContent='Mengirim jawaban…';
+  $('#dskor').hidden=true;$('#retry').hidden=true;$('#home').hidden=true;$('#rev').hidden=true;
+  $('#dstat').textContent='Jangan tutup halaman ini.';
+  const data={secret:SECRET,id:st.id,nama:st.nama,kelas:st.kelas,jawaban:st.jawaban,pindah:st.pindah||0,paksa:st.paksa?1:0,wkt:st.wkt||{}};
+  let galat='koneksi gagal';
+  try{
+    for(let t=0;t<3;t++){
+      try{
+        const j=await panggil(URL_SHEET,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)},25000);
+        if(j&&j.ok){berhasil(j);return}
+        throw new Error((j&&j.error)||'Server menolak data');
+      }catch(e){
+        galat=e.message||galat;
+        if(/rahasia|menolak|dikenali|ditemukan/i.test(galat))break;
+        if(t<2)await tunggu(1500*(t+1));
+      }
+    }
+    $('#djudul').textContent='Belum terkirim';
+    $('#dstat').textContent='Jawabanmu aman tersimpan di perangkat ini. Pastikan internet menyala, lalu tekan Kirim ulang. Jangan hapus data browser. ('+galat+')';
+    $('#retry').hidden=false;
+  }finally{mengirim=false}
+}
+$('#rfk').onclick=async()=>{
+  if(!$('#rf0').value||!$('#rf1').value){$('#rfe').textContent='Pilih tingkat keyakinan dan bagian tersulit dulu.';return}
+  const b=$('#rfk');b.disabled=true;b.textContent='Mengirim…';$('#rfe').textContent='';
+  try{const j=await panggil(URL_SHEET,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({aksi:'refleksi',secret:SECRET,id:akhir.id,nama:akhir.nama,kelas:akhir.kelas,yakin:$('#rf0').value,tersulit:$('#rf1').value,belajar:$('#rf2').value.trim(),bingung:$('#rf3').value.trim()})},20000);
+    if(j&&j.ok){$('#refl').innerHTML='<h2>Terima kasih atas refleksimu 🙏</h2>'}else throw new Error((j&&j.error)||'gagal')}
+  catch(e){$('#rfe').textContent='Belum terkirim: '+(e.message||'koneksi gagal')+'. Coba lagi.';b.disabled=false;b.textContent='Kirim refleksi'}
+};
+$('#retry').onclick=()=>{if(!navigator.onLine){alert('Internet belum tersambung.');return}kirim()};
+
+addEventListener('beforeunload',e=>{if(st&&!$('#done').hidden||st&&!$('#quiz').hidden){e.preventDefault();e.returnValue=''}});
+
+/* ---------- pulihkan sesi yang belum terkirim ---------- */
+(function(){
+  const lama=load();
+  if(lama){$('#nama').value=lama.nama;$('#kelas').value=lama.kelas;
+    $('#err').style.color='var(--ink2)';
+    $('#err').textContent=lama.selesai?'Ada jawaban yang belum terkirim. Isi kode lalu tekan Mulai untuk mengirimnya.':'Ada asesmen yang belum selesai. Isi kode lalu tekan Mulai untuk melanjutkan.'}
+  net();
+})();
+</script>
+</body>
+</html>
